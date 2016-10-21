@@ -1,0 +1,24 @@
+
+table{
+    border-collapse: collapse;
+    font-size: xx-large;
+}
+#job, #employees{
+    position: relative;
+    width: 50%;
+}
+#job{
+    float: left;
+    text-align: center;
+}
+#time{
+    width: 100%;
+    float: left;
+    text-align: center;
+}
+form{
+    float: left;
+}
+th,td {
+    border: 1px solid black;
+}

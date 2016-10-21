@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Labor Tracking</title>
+    <link rel="stylesheet" type="text/css" href="/static/Workstation.css">
+
+    <script>
+    function startTime() {
+        var today1 = new Date(Date.now() - Date.parse("{{ job.time }}"));
+        var h = today1.getHours();
+        var m = today1.getMinutes();
+        var s = today1.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('jobtime').innerHTML =
+        h + ":" + m + ":" + s;
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+    </script>
+
 </head>
-<body>
-    <table id="Job">
+<body onload="startTime()">
+    <table id="job">
         <tr><th id="workorderhead">Work Order #</th></tr>
         <tr><td id="workordernum">{{ job.number }}</td></tr>
         <tr><th id="jobstatushead">STATUS</th></tr>
@@ -14,14 +34,18 @@
     <table id="employees">
         <tr><th>Logged In</th><th>Time</th></tr>
         {% for employee in employees %}
-            <tr><td>{{ employee.name }}</td><td>{{ employee.time }}</td></tr>
+            <tr><td class="employeename">{{ employee.name }}</td><td class="employeetime">{{ employee.time }}</td></tr>
         {% endfor %}
     </table>
 
     <table id="time">
         <tr><th>Total time on job</th></tr>
-        <tr><td>{{ job.time }}</td></tr>
+        <tr><td id="jobtime"></td></tr>
     </table>
+    <form action="tracking" method="post">
+        <input type="text" name="scan" autofocus>
+        <input type="submit" value="">
+    </form>
 
 
 </body>
