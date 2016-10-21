@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Labor Tracking</title>
+</head>
+<body>
+    <table id="Job">
+        <tr><th id="workorderhead">Work Order #</th></tr>
+        <tr><td id="workordernum">{{ job.number }}</td></tr>
+        <tr><th id="jobstatushead">STATUS</th></tr>
+        <tr><td id="jobstatus">{{ job.status }}</td></tr>
+    </table>
+    <table id="employees">
+        <tr><th>Logged In</th><th>Time</th></tr>
+        {% for employee in employees %}
+            <tr><td>{{ employee.name }}</td><td>{{ employee.time }}</td></tr>
+        {% endfor %}
+    </table>
+
+    <table id="time">
+        <tr><th>Total time on job</th></tr>
+        <tr><td>{{ job.time }}</td></tr>
+    </table>
+
+
+</body>
+</html>
