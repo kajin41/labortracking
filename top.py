@@ -1,0 +1,3 @@
+currentJobs = []
+employees = []
+activeWorkstations = []
