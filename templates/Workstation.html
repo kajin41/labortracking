@@ -29,7 +29,7 @@
         <tr><th id="workorderhead">Work Order #</th></tr>
         <tr><td id="workordernum">{{ job.number }}</td></tr>
         <tr><th id="jobstatushead">STATUS</th></tr>
-        <tr><td id="jobstatus">{{ job.status }}</td></tr>
+        <tr><td id="jobstatus" class="{{ job.status }}">{{ job.status }}</td></tr>
     </table>
     <table id="employees">
         <tr><th>Logged In</th><th>Time</th></tr>

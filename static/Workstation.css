@@ -22,3 +22,9 @@ form{
 th,td {
     border: 1px solid black;
 }
+.ON{
+    color: green;
+}
+.OFF{
+    color: red;
+}

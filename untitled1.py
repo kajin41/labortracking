@@ -1,15 +1,13 @@
 from flask import Flask, request, render_template
-#import pyodbc
+
 import socket
-from top import employees, activeWorkstations, currentJobs
+from top import employees, activeWorkstations, currentJobs, cursor, conn, ipaddrs
 from datetime import datetime, timedelta
+import pyodbc
 
 app = Flask(__name__)
 
-# conn = pyodbc.connect(
-#     'DRIVER={SQL Server};;SERVER=cti-syspro.local.citytheatrical.com;PORT=51845;DATABASE=SysproCompanyZ;UID=CITY\gmercado;PWD=01189998819991197253')
-#
-# cursor = conn.cursor()
+
 
 
 class workStation:
@@ -28,20 +26,19 @@ class Job:
         if self.id == '':
             return
 
-        # cursor = conn.cursor()
-        # cursor.execute("UPDATE TrackLaborJob SET DateFinish=? where Job=? AND Datestart=?",
-        #                datetime.datetime.utcnow(), self.id, self.start)
-        # conn.commit()
+        cursor.execute("UPDATE TrackLaborJob SET DateFinish=? where Job=? AND Datestart=?",
+                       datetime.utcnow(), self.id, self.start)
+        conn.commit()
 
-    def beginwritetodb(self):
+    def beginwritetodb(self, ws):
         if self.id == '':
             return
 
-        # cursor = conn.cursor()
-        # cursor.execute("insert into TrackLaborJob(Job, Datestart, DateFinish, Station) values (?,?,?,?)",
-        #                self.id,
-        #                self.start, datetime.datetime.utcnow(), workStation)
-        # conn.commit()
+        cursor = conn.cursor()
+        cursor.execute("insert into TrackLaborJob(Job, Datestart, DateFinish, Station) values (?,?,?,?)",
+                       self.id,
+                       self.start, datetime.utcnow(), ws.name)
+        conn.commit()
 
 
 '''
@@ -60,11 +57,10 @@ class Employee:
         if ws.currentJob.id == '':
             return
 
-        # cursor = conn.cursor()
-        # cursor.execute(
-        #     "insert into TrackLaborEmployee(EmployeeName, Job, Datestart, DateFinish, Station) values (?,?,?,?,?)",
-        #     self.name, ws.currentJob.id, self.start, datetime.datetime.utcnow(), ws.name)
-        # conn.commit()
+        cursor.execute(
+            "insert into TrackLaborEmployee(EmployeeName, Job, Datestart, DateFinish, Station) values (?,?,?,?,?)",
+            self.name, ws.currentJob.id, self.start, datetime.utcnow(), ws.name)
+        conn.commit()
 
     def restartclock(self):
         self.start = datetime.utcnow()
@@ -72,17 +68,22 @@ class Employee:
 
 @app.route('/labor/tracking', methods=['GET', 'POST'])
 def mainloop():
-    currentWorkStation = workStation(socket.gethostbyaddr(request.access_route[0])[0], Job('', ''), [])
+    currentWorkStation = workStation(ipaddrs[socket.gethostbyaddr(request.access_route[0])[0]], Job('', ''), [])
 
     for workstation in activeWorkstations:
-        if workstation.name == socket.gethostbyaddr(request.access_route[0])[0]:
+        if workstation.name == currentWorkStation.name:
             currentWorkStation = workstation
             break
+
     if activeWorkstations == []:
         activeWorkstations.append(currentWorkStation)
 
     if request.method == 'GET':
-        job = {'number': currentWorkStation.currentJob.id, 'status': 'ON', 'time': currentWorkStation.currentJob.start}
+        if currentWorkStation.currentJob.id == '' or currentWorkStation.employees == []:
+            stat = 'OFF'
+        else:
+            stat = 'ON'
+        job = {'number': currentWorkStation.currentJob.id, 'status': stat, 'time': currentWorkStation.currentJob.start}
 
         current_employees = []
         for employee in currentWorkStation.employees:
@@ -112,7 +113,7 @@ def mainloop():
                     employee.restartclock()
                 currentWorkStation.currentJob.finalwritetodb()
                 currentWorkStation.currentJob = Job(mscan, datetime.utcnow())
-                currentWorkStation.currentJob.beginwritetodb()
+                currentWorkStation.currentJob.beginwritetodb(currentWorkStation)
                 currentJobs.append(currentWorkStation.currentJob)
 
         # scan is an employee
@@ -136,8 +137,11 @@ def mainloop():
                 newemp = Employee(mscan, datetime.utcnow())
                 currentWorkStation.employees.append(newemp)
                 employees.append(newemp)
-
-        job = {'number': currentWorkStation.currentJob.id, 'status': 'ON', 'time': currentWorkStation.currentJob.start}
+        if currentWorkStation.currentJob.id == '' or currentWorkStation.employees == []:
+            stat = 'OFF'
+        else:
+            stat = 'ON'
+        job = {'number': currentWorkStation.currentJob.id, 'status': stat, 'time': currentWorkStation.currentJob.start}
 
         current_employees = []
         for employee in currentWorkStation.employees:
@@ -145,8 +149,10 @@ def mainloop():
         return render_template('Workstation.html', job=job, employees=current_employees)
 
 if __name__ == '__main__':
+    conn = pyodbc.connect(
+        'DRIVER={FreeTds};SERVER=SHIPPER.local.citytheatrical.com;PORT=50180;DATABASE=LaborTracking;UID=CITY\gmercado;\
+        PWD=01189998819991197253;TDS_Version=8.0')
+    cursor = conn.cursor()
+
     app.run(host='0.0.0.0')
-    # connect to the database
-    # conn = pyodbc.connect(
-    #     'DRIVER={FreeTds};SERVER=SHIPPER.local.citytheatrical.com;PORT=50180;DATABASE=LaborTracking;UID=CITY\gmercado;\
-    #     PWD=01189998819991197253;TDS_Version=8.0')
+    #app.run()
