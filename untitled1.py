@@ -68,7 +68,7 @@ class Employee:
 
 @app.route('/labor/tracking', methods=['GET', 'POST'])
 def mainloop():
-    currentWorkStation = workStation(ipaddrs[socket.gethostbyaddr(request.access_route[0])[0]], Job('', ''), [])
+    currentWorkStation = workStation(ipaddrs[request.access_route[0]], Job('', ''), [])
 
     for workstation in activeWorkstations:
         if workstation.name == currentWorkStation.name:
