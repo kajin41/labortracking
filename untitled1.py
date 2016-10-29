@@ -4,10 +4,14 @@ import socket
 from top import employees, activeWorkstations, currentJobs, cursor, conn, ipaddrs
 from datetime import datetime, timedelta
 import pyodbc
+import inspect
 
 app = Flask(__name__)
 
 
+def lineno():
+    """Returns the current line number in our program."""
+    return inspect.currentframe().f_back.f_lineno
 
 
 class workStation:
@@ -78,7 +82,7 @@ def mainloop():
             currentWorkStation = workstation
             break
 
-    if activeWorkstations == []: # todo this is the wrong statement it should check to see if it is in the list
+    if currentWorkStation not in activeWorkstations: # todo this is the wrong statement it should check to see if it is in the list
         activeWorkstations.append(currentWorkStation)
 
     if request.method == 'GET':
