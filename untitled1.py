@@ -104,7 +104,7 @@ def mainloop():
                 # sign everyone out and finish job
                 for employee in currentWorkStation.employees:
                     employee.writetodb(currentWorkStation)
-                currentWorkStation.clear()
+                activeWorkstations.remove(currentWorkStation)
                 currentWorkStation.currentJob.finalwritetodb()
                 currentJobs.remove(currentWorkStation.currentJob)
                 currentWorkStation.currentJob = Job('', '')
