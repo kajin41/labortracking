@@ -68,6 +68,8 @@ class Employee:
 
 @app.route('/labor/tracking', methods=['GET', 'POST'])
 def mainloop():
+    if request.access_route[0] not in ipaddrs:
+        return "OOPS! Please report this number to the system admin" + request.access_route[0]
     currentWorkStation = workStation(ipaddrs[request.access_route[0]], Job('', ''), [])
 
     for workstation in activeWorkstations:
