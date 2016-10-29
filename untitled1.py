@@ -64,7 +64,7 @@ class Employee:
 
     def restartclock(self):
         self.start = datetime.utcnow()
-socket.ge
+
 
 @app.route('/labor/tracking', methods=['GET', 'POST'])
 def mainloop():
