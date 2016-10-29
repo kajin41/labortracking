@@ -66,6 +66,7 @@ class Employee:
         self.start = datetime.utcnow()
 
 
+@app.errorhandler(500)
 @app.route('/labor/tracking', methods=['GET', 'POST'])
 def mainloop():
     if request.access_route[0] not in ipaddrs:
