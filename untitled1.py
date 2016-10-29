@@ -78,7 +78,7 @@ def mainloop():
             currentWorkStation = workstation
             break
 
-    if activeWorkstations == []:
+    if activeWorkstations == []: # todo this is the wrong statement it should check to see if it is in the list
         activeWorkstations.append(currentWorkStation)
 
     if request.method == 'GET':
@@ -105,7 +105,6 @@ def mainloop():
                 # sign everyone out and finish job
                 for employee in currentWorkStation.employees:
                     employee.writetodb(currentWorkStation)
-                activeWorkstations.remove(currentWorkStation)
                 currentWorkStation.currentJob.finalwritetodb()
                 currentJobs.remove(currentWorkStation.currentJob)
                 currentWorkStation.currentJob = Job('', '')
