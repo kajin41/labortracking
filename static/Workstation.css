@@ -7,6 +7,9 @@ table{
     position: relative;
     width: 50%;
 }
+#employees{
+    font-size: x-large;
+}
 #job{
     float: left;
     text-align: center;
