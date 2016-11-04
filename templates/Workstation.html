@@ -23,16 +23,20 @@
     }
     </script>
     <script>
-    function startTimeE(time, Eid) {
-        var today1 = new Date(Date.now() - Date.parse(time));
-        var h = today1.getHours();
-        var m = today1.getMinutes();
-        var s = today1.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-        document.getElementById(Eid).innerHTML =
-        h + ":" + m + ":" + s;
-        var t = setTimeout(startTime, 500);
+    function startTimeE() {
+        var table = document.getElementById("employees")
+        for (var i = 0, row; row = table.rows[i]; i++) {
+
+            var today1 = new Date(Date.now() - Date.parse(row.cells[1]));
+            var h = today1.getHours();
+            var m = today1.getMinutes();
+            var s = today1.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById(row.cells[0]).innerHTML =
+                    h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
     }
     function checkTime(i) {
         if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
@@ -41,7 +45,7 @@
     </script>
 
 </head>
-<body onload="startTime()">
+<body onload="startTime(); startTimeE()">
     <table id="job">
         <tr><th id="workorderhead">Work Order #</th></tr>
         <tr><td id="workordernum">{{ job.number }}</td></tr>
@@ -51,10 +55,7 @@
     <table id="employees">
         <tr><th>Logged In</th><th>Time</th></tr>
         {% for employee in employees %}
-            <tr><td class="employeename">{{ employee.name }}</td><td id="{{ employee.name }}" class="employeetime">{{ employee.time }}</td></tr>
-            <script>
-            document.onload=function(){startTimeE("{{ employee.time }}","{{ employee.name }}")};
-            </script>
+            <tr><td class="employeename">{{ employee.name }}</td><td style="display: none">{{ employee.time }}</td><td id="{{ employee.name }}" class="employeetime"></td></tr>
         {% endfor %}
     </table>
 
