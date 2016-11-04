@@ -103,9 +103,7 @@ def mainloop():
         mscan = request.form['scan']
 
         # if scan is a job
-        if mscan[0] == '0' or mscan[0] == '1' or mscan[0] == '2' or mscan[0] == '3' or mscan[0] == '4' or mscan[
-            0] == '5' \
-                or mscan[0] == '6' or mscan[0] == '7' or mscan[0] == '8' or mscan[0] == '9':
+        if mscan[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
             # if scan job is the current job
             if currentWorkStation.currentJob.id == mscan:
                 # sign everyone out and finish job
@@ -120,8 +118,12 @@ def mainloop():
                     employee.writetodb(currentWorkStation)
                     employee.restartclock()
                 currentWorkStation.currentJob.finalwritetodb()
-                currentWorkStation.currentJob = Job(mscan, datetime.utcnow())
-                currentWorkStation.currentJob.beginwritetodb(currentWorkStation)
+                if currentWorkStation.employees == []:
+                    currentWorkStation.currentJob = Job(mscan, '')
+                else:
+                    currentWorkStation.currentJob = Job(mscan, datetime.utcnow())
+                    currentWorkStation.currentJob.beginwritetodb(currentWorkStation)
+
                 currentJobs.append(currentWorkStation.currentJob)
 
         # scan is an employee
@@ -134,6 +136,9 @@ def mainloop():
                     employee.writetodb(currentWorkStation)
                     currentWorkStation.employees.remove(employee)
                     employees.remove(employee)
+                    if currentWorkStation.employees == []:
+                        currentWorkStation.currentJob.finalwritetodb()
+                        currentWorkStation.currentJob.start = ''
                     newemployee = False
             for employee in employees:
                 if employee.name == mscan:
@@ -143,6 +148,9 @@ def mainloop():
             # else add employee to list
             if newemployee:
                 newemp = Employee(mscan, datetime.utcnow())
+                if currentWorkStation.employees == [] and not (currentWorkStation.currentJob.id == ''):
+                    currentWorkStation.currentJob.start = datetime.utcnow()
+                    currentWorkStation.currentJob.beginwritetodb(currentWorkStation)
                 currentWorkStation.employees.append(newemp)
                 employees.append(newemp)
         if currentWorkStation.currentJob.id == '' or currentWorkStation.employees == []:
