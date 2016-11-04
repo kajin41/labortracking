@@ -22,6 +22,23 @@
         return i;
     }
     </script>
+    <script>
+    function startTimeE(time, Eid) {
+        var today1 = new Date(Date.now() - Date.parse(time));
+        var h = today1.getHours();
+        var m = today1.getMinutes();
+        var s = today1.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('jobtime').innerHTML =
+        h + ":" + m + ":" + s;
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+    </script>
 
 </head>
 <body onload="startTime()">
@@ -34,7 +51,10 @@
     <table id="employees">
         <tr><th>Logged In</th><th>Time</th></tr>
         {% for employee in employees %}
-            <tr><td class="employeename">{{ employee.name }}</td><td class="employeetime">{{ employee.time }}</td></tr>
+            <tr><td class="employeename">{{ employee.name }}</td><td id="{{ employee.name }}" class="employeetime">{{ employee.time }}</td></tr>
+            <script>
+            document.onload=function(){startTimeE({{ employee.time }},{{ employee.name }})}
+            </script>
         {% endfor %}
     </table>
 
