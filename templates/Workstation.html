@@ -25,7 +25,7 @@
     <script>
     function startTimeE() {
         var table = document.getElementById("employees")
-        for (var i = 0, row; row = table.rows[i]; i++) {
+        for (var i = 1, row; row = table.rows[i]; i++) {
 
             var today1 = new Date(Date.now() - Date.parse(row.cells[1]));
             var h = today1.getHours();
