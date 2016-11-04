@@ -33,7 +33,7 @@
             var s = today1.getSeconds();
             m = checkTime(m);
             s = checkTime(s);
-            document.getElementById(row.cells[0]).innerHTML =
+            document.getElementById(row.cells[0].innerHTML).innerHTML =
                     h + ":" + m + ":" + s;
             var t = setTimeout(startTime, 500);
         }
