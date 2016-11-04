@@ -1,17 +1,10 @@
 from flask import Flask, request, render_template
 
-import socket
 from top import employees, activeWorkstations, currentJobs, cursor, conn, ipaddrs
-from datetime import datetime, timedelta
+from datetime import datetime
 import pyodbc
-import inspect
 
 app = Flask(__name__)
-
-
-def lineno():
-    """Returns the current line number in our program."""
-    return inspect.currentframe().f_back.f_lineno
 
 
 class workStation:
@@ -73,6 +66,7 @@ class Employee:
 @app.errorhandler(500)
 @app.route('/labor/tracking', methods=['GET', 'POST'])
 def mainloop():
+    message = ''
     if request.access_route[0] not in ipaddrs:
         return "OOPS! Please report this number to the system admin" + request.access_route[0]
     currentWorkStation = workStation(ipaddrs[request.access_route[0]], Job('', ''), [])
@@ -97,7 +91,7 @@ def mainloop():
         current_employees = []
         for employee in currentWorkStation.employees:
             current_employees.append({'name': employee.name, 'time': employee.start})
-        return render_template('Workstation.html', job=job, employees=current_employees)
+        return render_template('Workstation.html', job=job, employees=current_employees, message=message)
 
     if request.method == 'POST':
         mscan = request.form['scan']
@@ -164,7 +158,7 @@ def mainloop():
         current_employees = []
         for employee in currentWorkStation.employees:
             current_employees.append({'name': employee.name, 'time': employee.start})
-        return render_template('Workstation.html', job=job, employees=current_employees)
+        return render_template('Workstation.html', job=job, employees=current_employees, message=message)
 
 if __name__ == '__main__':
     conn = pyodbc.connect(
@@ -173,4 +167,4 @@ if __name__ == '__main__':
     cursor = conn.cursor()
 
     app.run(host='0.0.0.0')
-    #app.run()
+    # app.run()

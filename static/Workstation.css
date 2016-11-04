@@ -31,3 +31,7 @@ th,td {
 .OFF{
     color: red;
 }
+#message{
+    font-size: x-large;
+    color: red;
+}
