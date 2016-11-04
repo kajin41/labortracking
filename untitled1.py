@@ -77,12 +77,14 @@ def mainloop():
         return "OOPS! Please report this number to the system admin" + request.access_route[0]
     currentWorkStation = workStation(ipaddrs[request.access_route[0]], Job('', ''), [])
 
+    wsnew = True
     for workstation in activeWorkstations:
         if workstation.name == currentWorkStation.name:
             currentWorkStation = workstation
+            wsnew = False
             break
 
-    if currentWorkStation not in activeWorkstations: # todo this is the wrong statement it should check to see if it is in the list
+    if wsnew:  # todo this is the wrong statement it should check to see if it is in the list
         activeWorkstations.append(currentWorkStation)
 
     if request.method == 'GET':
