@@ -53,7 +53,7 @@
         {% for employee in employees %}
             <tr><td class="employeename">{{ employee.name }}</td><td id="{{ employee.name }}" class="employeetime">{{ employee.time }}</td></tr>
             <script>
-            document.onload=function(){startTimeE({{ employee.time }},{{ employee.name }})}
+            document.onload=function(){startTimeE("{{ employee.time }}","{{ employee.name }}")};
             </script>
         {% endfor %}
     </table>
