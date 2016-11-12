@@ -165,6 +165,12 @@ def mainloop():
 def main_view():
     return render_template("View.html", workstations=activeWorkstations)
 
+
+@app.route('/labor/totals', methods=['GET', 'POST'])
+def totals_view():
+    # todo: get active jobs and run their totals etc
+    return render_template("Totals.html", workstations=activeWorkstations)
+
 if __name__ == '__main__':
     conn = pyodbc.connect(
         'DRIVER={FreeTds};SERVER=SHIPPER.local.citytheatrical.com;PORT=50180;DATABASE=LaborTracking;UID=CITY\\gmercado;\
