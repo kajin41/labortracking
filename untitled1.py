@@ -173,7 +173,7 @@ def totals_view():
 
 if __name__ == '__main__':
     conn = pyodbc.connect(
-        'DRIVER={FreeTds};SERVER=SHIPPER.local.citytheatrical.com;PORT=50180;DATABASE=LaborTracking;UID=CITY\\gmercado;\
+        'DRIVER={FreeTds};SERVER=CTI-SYSPRO.local.citytheatrical.com;DATABASE=SysproCompanyC;UID=CITY\\gmercado;\
         PWD=01189998819991197253;TDS_Version=8.0')
     cursor = conn.cursor()
 
