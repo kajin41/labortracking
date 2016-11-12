@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Current Jobs</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Job</th>
+        <th>WorkStation</th>
+        <th>Time Start</th>
+        <th>Employee</th>
+        <th>Time</th>
+    </tr>
+{% for workstation in workstations %}
+    <tr>
+        <td>{{ workstation.currentJob.id }}</td>
+        <td>{{ workstation.name }}</td>
+        <td>{{ workstation.currentJob.start }}</td>
+        <td><table>
+            {% for employee in workstation.employees %}
+                <tr>
+                    <td>{{ employee.name }}</td>
+                    <td>{{ employee.start }}</td>
+                </tr>
+            {% endfor %}
+        </table></td>
+    </tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

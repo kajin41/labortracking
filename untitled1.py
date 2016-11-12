@@ -160,6 +160,11 @@ def mainloop():
             current_employees.append({'name': employee.name, 'time': employee.start})
         return render_template('Workstation.html', job=job, employees=current_employees, message=message)
 
+
+@app.route('/labor/view', methods=['GET', 'POST'])
+def main_view():
+    return render_template("View.html", workstations=activeWorkstations)
+
 if __name__ == '__main__':
     conn = pyodbc.connect(
         'DRIVER={FreeTds};SERVER=SHIPPER.local.citytheatrical.com;PORT=50180;DATABASE=LaborTracking;UID=CITY\\gmercado;\
