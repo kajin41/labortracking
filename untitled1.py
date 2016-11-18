@@ -213,6 +213,7 @@ def totals_view():
 
             stations = {}
             for station in station_total:
+                print(station.Station)
                 mh = 0
                 for s in station_manhr:
                     if s.Station == station.Station:
