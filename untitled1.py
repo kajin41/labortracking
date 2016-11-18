@@ -195,14 +195,18 @@ def totals_view():
 
     masterjobs = {}
 
-    masterjobs_total = cursor.execute(SQLQueries['masterJob-totaltime'] + SQLwhere + SQLQueries['masterJob-group'])
-    masterjobs_manhr = cursor.execute(SQLQueries['masterJob-manhours'] + SQLwhere + SQLQueries['masterJob-group'])
+    cursor.execute(SQLQueries['masterJob-totaltime'] + SQLwhere + SQLQueries['masterJob-group'])
+    masterjobs_total = cursor.fetchall()
+    cursor.execute(SQLQueries['masterJob-manhours'] + SQLwhere + SQLQueries['masterJob-group'])
+    masterjobs_manhr = cursor.fetchall()
     print(masterjobs_total)
     for masterjob in masterjobs_total:
         print(masterjob.MasterJob)
         SQLwhere2 = " and MasterJob like '" + masterjob.MasterJob + "' "
-        subjobs_total = cursor.execute(SQLQueries['subJob-totaltime'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
-        subjobs_manhr = cursor.execute(SQLQueries['subJob-manhours'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
+        cursor.execute(SQLQueries['subJob-totaltime'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
+        subjobs_total = cursor.fetchall()
+        cursor.execute(SQLQueries['subJob-manhours'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
+        subjobs_manhr = cursor.fetchall()
 
         subjobs = {}
         for subjob in subjobs_total:
@@ -210,7 +214,8 @@ def totals_view():
             SQLwhere3 = " and WipMaster.Job like '" + subjob.Job + "' "
             cursor.execute(SQLQueries['station-totaltime'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
             station_total = cursor.fetchall()
-            station_manhr = cursor.execute(SQLQueries['station-manhours'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
+            cursor.execute(SQLQueries['station-manhours'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
+            station_manhr = cursor.fetchall()
             stations = {}
             for station in station_total:
                 print(station.Station)
