@@ -28,7 +28,7 @@
     <input type="submit" value="Refresh">
 </form>
 <table>
-{% for mjob in sorted(masterjobs.keys()) %}
+{% for mjob in masterjobs.keys() %}
     <tr id="{{ mjob }}">
         <td>{{ mjob }}</td>
         <td>{{ masterjobs[mjob][mjob].totaltime }}</td>
@@ -37,7 +37,7 @@
         <td>{{ masterjobs[mjob][mjob].endtime }}</td>
         <td>
             <table id="sub-{{ mjob }}">
-                {% for sjob in sorted(masterjobs[mjob].keys()) %}
+                {% for sjob in masterjobs[mjob].keys() %}
                     {% if mjob != sjob %}
                     <tr id="{{ sjob }}">
                         <td>{{ sjob }}</td>
@@ -46,7 +46,7 @@
                         <td>{{ masterjobs[mjob][sjob].starttime }}</td>
                         <td>{{ masterjobs[mjob][sjob].endtime }}</td>
                         <table id="station-{{ sjob }}">
-                            {% for station in sorted(masterjobs[mjob][sjob].station.keys()) %}
+                            {% for station in masterjobs[mjob][sjob].station.keys() %}
                                 <tr id="{{ station }}">
                                     <td>{{ station }}</td>
                                     <td>{{ masterjobs[mjob][sjob].station[station].totaltime }}</td>
