@@ -23,7 +23,7 @@ SQLQueries = {
                               [WipMaster].Job\
 	                          ,[MasterJob]\
                               ,[Station]\
-                              ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
+                              ,sum(datediff(minute,Datestart,DateFinish)) as totaltime\
                               ,min(Datestart) as starttime\
                               ,max(DateFinish) as endtime\
                             FROM [SysproCompanyC].[dbo].[TrackLaborJob]\
@@ -37,7 +37,7 @@ SQLQueries = {
     'subJob-totaltime': "SELECT\
                               [WipMaster].Job\
 	                          [MasterJob]\
-                              ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
+                              ,sum(datediff(minute,Datestart,DateFinish)) as totaltime\
                               ,min(Datestart) as starttime\
                               ,max(DateFinish) as endtime\
                             FROM [SysproCompanyC].[dbo].[TrackLaborJob]\
@@ -50,7 +50,7 @@ SQLQueries = {
                           on WipMaster.Job LIKE '%'+ TrackLaborEmployee.Job",
     'masterJob-totaltime': "SELECT\
 	                          [MasterJob]\
-                              ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
+                              ,sum(datediff(minute,Datestart,DateFinish)) as totaltime\
                               ,min(Datestart) as starttime\
                               ,max(DateFinish) as endtime\
                             FROM [SysproCompanyC].[dbo].[TrackLaborJob]\
