@@ -27,7 +27,42 @@
     </div>
     <input type="submit" value="Refresh">
 </form>
-
-
+<table>
+{% for mjob in sorted(masterjobs.keys()) %}
+    <tr id="{{ mjob }}">
+        <td>{{ mjob }}</td>
+        <td>{{ masterjobs[mjob][mjob].totaltime }}</td>
+        <td>{{ masterjobs[mjob][mjob].manhours }}</td>
+        <td>{{ masterjobs[mjob][mjob].starttime }}</td>
+        <td>{{ masterjobs[mjob][mjob].endtime }}</td>
+        <td>
+            <table id="sub-{{ mjob }}">
+                {% for sjob in sorted(masterjobs[mjob].keys()) %}
+                    {% if mjob != sjob %}
+                    <tr id="{{ sjob }}">
+                        <td>{{ sjob }}</td>
+                        <td>{{ masterjobs[mjob][sjob].totaltime }}</td>
+                        <td>{{ masterjobs[mjob][sjob].manhours }}</td>
+                        <td>{{ masterjobs[mjob][sjob].starttime }}</td>
+                        <td>{{ masterjobs[mjob][sjob].endtime }}</td>
+                        <table id="station-{{ sjob }}">
+                            {% for station in sorted(masterjobs[mjob][sjob].station.keys()) %}
+                                <tr id="{{ station }}">
+                                    <td>{{ station }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].station[station].totaltime }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].station[station].manhours }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].station[station].starttime }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].station[station].endtime }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+{% endfor %}
+</table>
 </body>
 </html>

@@ -166,10 +166,41 @@ def main_view():
     return render_template("View.html", workstations=activeWorkstations)
 
 
+class subJob:
+    def __init__(self, starttime, endtime, totaltime, manhours, stations):
+        self.starttime = starttime
+        self.endtime = endtime
+        self.totaltime = totaltime
+        self.manhours = manhours
+        self.stations = stations
+
+
+class station:
+    def __init__(self, starttime, endtime, totaltime, manhours):
+        self.starttime = starttime
+        self.endtime = endtime
+        self.totaltime = totaltime
+        self.manhours = manhours
+
+
 @app.route('/labor/totals', methods=['GET', 'POST'])
 def totals_view():
     # todo: get active jobs and run their totals etc
-    return render_template("Totals.html", workstations=activeWorkstations)
+    masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
+                                              {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11'),
+                                               'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
+                             '123457': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
+                                              {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22')}),
+                             '123458': subJob('start time 3', 'end time 3', 'total time 3', 'manhours 3',
+                                              {'fab4': station('start time 33', 'end time 33', 'total time 33', 'manhours 33')})},
+                  '234567': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
+                                              {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11'),
+                                               'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
+                             '123457': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
+                                              {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22')}),
+                             '123458': subJob('start time 3', 'end time 3', 'total time 3', 'manhours 3',
+                                              {'fab4': station('start time 33', 'end time 33', 'total time 33', 'manhours 33')})}}
+    return render_template("Totals.html", masterjobs=masterjobs)
 
 if __name__ == '__main__':
     conn = pyodbc.connect(
