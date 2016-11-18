@@ -212,6 +212,7 @@ def totals_view():
         subjobs = {}
         mh = 0
         for s in masterjobs_manhr:
+            print(s[0], masterjobs_total[0])
             if s[0] == masterjobs_total[0]:
                 mh = s[1]
                 print("true...........")
@@ -236,7 +237,6 @@ def totals_view():
                     mh = s[1]
             subjobs[subjob[0]] = SubJob(subjob[2], subjob[3], subjob[1], mh, stations)
         masterjobs[masterjob[0]] = subjobs
-    print(masterjobs)
     # masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
     #                                           {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
     #                          '123457': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
