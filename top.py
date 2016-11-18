@@ -18,7 +18,7 @@ SQLQueries = {
     'station-manhours': "SELECT [WipMaster].Job, [Station], sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
                           FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
                           left join WipMaster\
-                          on WipMaster.Job LIKE '%'+ TrackLaborJob.Job",
+                          on WipMaster.Job LIKE '%'+ TrackLaborEmployee.Job",
     'station-totaltime': "SELECT\
                               [WipMaster].Job\
 	                          ,[MasterJob]\
@@ -33,7 +33,7 @@ SQLQueries = {
     'subJob-manhours': "SELECT [WipMaster].Job, sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
                           FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
                           left join WipMaster\
-                          on WipMaster.Job LIKE '%'+ TrackLaborJob.Job",
+                          on WipMaster.Job LIKE '%'+ TrackLaborEmployee.Job",
     'subJob-totaltime': "SELECT\
                               [WipMaster].Job\
 	                          [MasterJob]\
@@ -47,7 +47,7 @@ SQLQueries = {
     'masterJob-manhours': "SELECT [MasterJob], sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
                           FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
                           left join WipMaster\
-                          on WipMaster.Job LIKE '%'+ TrackLaborJob.Job",
+                          on WipMaster.Job LIKE '%'+ TrackLaborEmployee.Job",
     'masterJob-totaltime': "SELECT\
 	                          [MasterJob]\
                               ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
