@@ -221,12 +221,12 @@ def totals_view():
                 mh = 0
                 for s in station_manhr:
                     if s[0] == station[0]:
-                        mh = s[4]
+                        mh = s[3]
                 stations[station.Station] = Station(station[1], station[2], station[3], mh)
             mh = 0
             for s in subjobs_manhr:
                 if s[0] == subjob[0]:
-                    mh = s[4]
+                    mh = s[3]
             subjobs[subjob[0]] = SubJob(subjob[1], subjob[2], subjob[3], mh, stations)
         masterjobs[masterjob[0]] = subjobs
 
