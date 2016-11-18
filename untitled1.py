@@ -210,7 +210,7 @@ def totals_view():
             SQLwhere3 = " and WipMaster.Job like '" + subjob.Job + "' "
             station_total = cursor.execute(SQLQueries['station-totaltime'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
             station_manhr = cursor.execute(SQLQueries['station-manhours'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
-
+            print([column[0] for column in cursor.description])
             stations = {}
             for station in station_total:
                 print(station.Station)
