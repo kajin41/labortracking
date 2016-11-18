@@ -199,17 +199,23 @@ def totals_view():
     masterjobs_total = cursor.fetchall()
     cursor.execute(SQLQueries['masterJob-manhours'] + SQLwhere + SQLQueries['masterJob-group'])
     masterjobs_manhr = cursor.fetchall()
-    print(masterjobs_total)
+    # print(masterjobs_total)
     for masterjob in masterjobs_total:
-        print(masterjob.MasterJob)
-        SQLwhere2 = " and MasterJob like '" + masterjob.MasterJob + "' "
+        # print(masterjob.MasterJob)
+        SQLwhere2 = " and MasterJob like '" + masterjob[0] + "' "
         cursor.execute(SQLQueries['subJob-totaltime'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
-        print([column[0] for column in cursor.description])
+        # print([column[0] for column in cursor.description])
         subjobs_total = cursor.fetchall()
         cursor.execute(SQLQueries['subJob-manhours'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
         subjobs_manhr = cursor.fetchall()
 
         subjobs = {}
+        mh = 0
+        for s in masterjobs_manhr:
+            if s[0] == masterjobs_total[0]:
+                mh = s[1]
+        subjobs[masterjob[0]] = SubJob(masterjob[2], masterjob[3], masterjob[1], mh)
+
         for subjob in subjobs_total:
             SQLwhere3 = " and WipMaster.Job like '" + subjob[0] + "' "
             cursor.execute(SQLQueries['station-totaltime'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
@@ -222,14 +228,14 @@ def totals_view():
                 for s in station_manhr:
                     if s[0] == station[0]:
                         mh = s[1]
-                stations[station.Station] = Station(station[1], station[2], station[3], mh)
+                stations[station.Station] = Station(station[2], station[3], station[1], mh)
             mh = 0
             for s in subjobs_manhr:
                 if s[0] == subjob[0]:
                     mh = s[1]
-            subjobs[subjob[0]] = SubJob(subjob[1], subjob[2], subjob[3], mh, stations)
+            subjobs[subjob[0]] = SubJob(subjob[2], subjob[3], subjob[1], mh, stations)
         masterjobs[masterjob[0]] = subjobs
-        print(masterjobs)
+    print(masterjobs)
     # masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
     #                                           {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
     #                          '123457': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
