@@ -229,8 +229,8 @@ def totals_view():
             for s in subjobs_manhr:
                 if s[0] == subjob[0]:
                     mh = s[4]
-            subjobs[subjob.Job] = SubJob(subjob[1], subjob[2], subjob[3], mh, stations)
-        masterjobs[masterjob.Job] = subjobs
+            subjobs[subjob[0]] = SubJob(subjob[1], subjob[2], subjob[3], mh, stations)
+        masterjobs[masterjob[0]] = subjobs
 
     # masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
     #                                           {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
