@@ -197,8 +197,9 @@ def totals_view():
 
     masterjobs_total = cursor.execute(SQLQueries['masterJob-totaltime'] + SQLwhere + SQLQueries['masterJob-group'])
     masterjobs_manhr = cursor.execute(SQLQueries['masterJob-manhours'] + SQLwhere + SQLQueries['masterJob-group'])
-
+    print(masterjobs_total)
     for masterjob in masterjobs_total:
+
         SQLwhere2 = " and MasterJob like '" + masterjob.MasterJob + "' "
         subjobs_total = cursor.execute(SQLQueries['subJob-totaltime'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
         subjobs_manhr = cursor.execute(SQLQueries['subJob-manhours'] + SQLwhere + SQLwhere2 + SQLQueries['subJob-group'])
