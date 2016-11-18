@@ -45,7 +45,8 @@
                         <td>{{ masterjobs[mjob][sjob].manhours }}</td>
                         <td>{{ masterjobs[mjob][sjob].starttime }}</td>
                         <td>{{ masterjobs[mjob][sjob].endtime }}</td>
-                        <table id="station-{{ sjob }}">
+                        <td>
+                            <table id="station-{{ sjob }}">
                             {% for station in masterjobs[mjob][sjob].stations.keys() %}
                                 <tr id="{{ station }}">
                                     <td>{{ station }}</td>
@@ -55,7 +56,8 @@
                                     <td>{{ masterjobs[mjob][sjob].stations[station].endtime }}</td>
                                 </tr>
                             {% endfor %}
-                        </table>
+                            </table>
+                        </td>
                     </tr>
                     {% endif %}
                 {% endfor %}
