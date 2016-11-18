@@ -212,7 +212,7 @@ def totals_view():
         subjobs = {}
         for subjob in subjobs_total:
             print(subjob.Job)
-            SQLwhere3 = " and WipMaster.Job like '" + subjob.Job + "' "
+            SQLwhere3 = " and WipMaster.Job like '" + subjob[0] + "' "
             cursor.execute(SQLQueries['station-totaltime'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
             station_total = cursor.fetchall()
             cursor.execute(SQLQueries['station-manhours'] + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group'])
@@ -222,14 +222,14 @@ def totals_view():
                 print(station.Station)
                 mh = 0
                 for s in station_manhr:
-                    if s.Station == station.Station:
+                    if s[0] == station[0]:
                         mh = s.manMinutes
-                stations[station.Station] = Station(station.starttime, station.endtime, station.totaltime, mh)
+                stations[station.Station] = Station(station[1], station[2], station[3], mh)
             mh = 0
             for s in subjobs_manhr:
-                if s.Job == subjob.Job:
-                    mh = s.manMinutes
-            subjobs[subjob.Job] = SubJob(subjob.starttime, subjob.endtime, subjob.totaltime, mh, stations)
+                if s[0] == subjob[0]:
+                    mh = s[4]
+            subjobs[subjob.Job] = SubJob(subjob[1], subjob[2], subjob[3], mh, stations)
         masterjobs[masterjob.Job] = subjobs
 
     # masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
