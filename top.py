@@ -43,7 +43,7 @@ SQLQueries = {
                             left join WipMaster\
                             on TrackLaborJob.Job=WipMaster.Job",
     'subJob-group': "GROUP BY MasterJob, WipMaster.Job",
-    'masterJob-manhours': "SELECT [TrackLaborEmployee].Job, sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
+    'masterJob-manhours': "SELECT [MasterJob], sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
                           FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
                           left join WipMaster\
                           on TrackLaborEmployee.Job=WipMaster.Job",
