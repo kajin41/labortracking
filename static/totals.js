@@ -3,7 +3,7 @@
  */
 $(document).ready(function () {
     $(".filter").change(function (){
-      if (this.val() == "Open"){
+      if (this.value == "Open"){
           document.getElementsByName("From").style.display = 'none';
       }
     }
