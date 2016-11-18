@@ -187,10 +187,10 @@ class station:
 def totals_view():
     # todo: get active jobs and run their totals etc
     masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
-                                              {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11'),
-                                               'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
+                                              {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
                              '123457': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
-                                              {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22')}),
+                                              {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22'),
+                                               'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
                              '123458': subJob('start time 3', 'end time 3', 'total time 3', 'manhours 3',
                                               {'fab4': station('start time 33', 'end time 33', 'total time 33', 'manhours 33')})},
                   '234567': {'234567': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',

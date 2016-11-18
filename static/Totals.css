@@ -3,3 +3,9 @@ form div{
     float: left;
     padding-right: 1em;
 }
+td{
+    border:solid 1px;
+}
+table{
+    border: solid 1px;
+}
