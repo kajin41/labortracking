@@ -46,13 +46,13 @@
                         <td>{{ masterjobs[mjob][sjob].starttime }}</td>
                         <td>{{ masterjobs[mjob][sjob].endtime }}</td>
                         <table id="station-{{ sjob }}">
-                            {% for station in masterjobs[mjob][sjob].station.keys() %}
+                            {% for station in masterjobs[mjob][sjob].stations.keys() %}
                                 <tr id="{{ station }}">
                                     <td>{{ station }}</td>
-                                    <td>{{ masterjobs[mjob][sjob].station[station].totaltime }}</td>
-                                    <td>{{ masterjobs[mjob][sjob].station[station].manhours }}</td>
-                                    <td>{{ masterjobs[mjob][sjob].station[station].starttime }}</td>
-                                    <td>{{ masterjobs[mjob][sjob].station[station].endtime }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].stations[station].totaltime }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].stations[station].manhours }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].stations[station].starttime }}</td>
+                                    <td>{{ masterjobs[mjob][sjob].stations[station].endtime }}</td>
                                 </tr>
                             {% endfor %}
                         </table>
