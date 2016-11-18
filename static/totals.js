@@ -7,7 +7,7 @@ $(document).ready(function () {
           document.getElementsByName("Fromdiv")[0].style.display = 'none';
           document.getElementsByName("Todiv")[0].style.display = 'none';
       }
-      else if (this.value == "Job"){
+      else if (this.value == "Date"){
           document.getElementsByName("From")[0].type = 'date';
           document.getElementsByName("To")[0].type = 'date';
           document.getElementsByName("Fromdiv")[0].style.display = 'block';
