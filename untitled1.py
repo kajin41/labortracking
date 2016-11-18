@@ -218,11 +218,10 @@ def totals_view():
             station_manhr = cursor.fetchall()
             stations = {}
             for station in station_total:
-                print(station.Station)
                 mh = 0
                 for s in station_manhr:
                     if s[0] == station[0]:
-                        mh = s.manMinutes
+                        mh = s[4]
                 stations[station.Station] = Station(station[1], station[2], station[3], mh)
             mh = 0
             for s in subjobs_manhr:
