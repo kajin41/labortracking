@@ -4,7 +4,7 @@
 $(document).ready(function () {
     $(".filter").change(function (){
       if (this.value == "Open"){
-          document.getElementsByName("From").style.display = 'none';
+          document.getElementsByName("From")[0].style.display = 'none';
       }
     }
     );
