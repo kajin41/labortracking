@@ -5,6 +5,26 @@
     <title>Title</title>
 </head>
 <body>
+<form action="/labor/totals">
+    <div>
+        Filter By:
+        <select name="filter">
+            <option value="Job">Job #</option>
+            <option value="Date">Date</option>
+            <option value="Open"></option>
+        </select>
+    </div>
+    <div>
+        From:
+        <input type="text" name="From">
+    </div>
+    <div>
+        To:
+        <input type="text" name="To">
+    </div>
+    <input type="submit" value="Refresh">
+</form>
+
 
 </body>
 </html>
