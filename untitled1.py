@@ -214,7 +214,7 @@ def totals_view():
         for s in masterjobs_manhr:
             if s[0] == masterjobs_total[0]:
                 mh = s[1]
-        subjobs[masterjob[0]] = SubJob(masterjob[2], masterjob[3], masterjob[1], mh)
+        subjobs[masterjob[0]] = SubJob(masterjob[2], masterjob[3], masterjob[1], mh, {})
 
         for subjob in subjobs_total:
             SQLwhere3 = " and WipMaster.Job like '" + subjob[0] + "' "
