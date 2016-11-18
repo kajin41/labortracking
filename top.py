@@ -15,12 +15,12 @@ ipaddrs = {'10.1.1.34': 'FAB010',
            '10.1.1.79': 'gmercado'}
 
 SQLQueries = {
-    'station-manhours': "SELECT [TrackLaborEmployee].Job, [Station], sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
+    'station-manhours': "SELECT [WipMaster].Job, [Station], sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
                           FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
                           left join WipMaster\
                           on TrackLaborEmployee.Job=WipMaster.Job",
     'station-totaltime': "SELECT\
-                              [TrackLaborJob].Job\
+                              [WipMaster].Job\
 	                          ,[MasterJob]\
                               ,[Station]\
                               ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
@@ -30,11 +30,12 @@ SQLQueries = {
                             left join WipMaster\
                             on TrackLaborJob.Job=WipMaster.Job",
     'station-group': "GROUP BY MasterJob,WipMaster.Job,Station",
-    'subJob-manhours': "SELECT [TrackLaborEmployee].Job, sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
+    'subJob-manhours': "SELECT [WipMaster].Job, sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
                           FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
                           left join WipMaster\
                           on TrackLaborEmployee.Job=WipMaster.Job",
     'subJob-totaltime': "SELECT\
+                              [WipMaster].Job\
 	                          [MasterJob]\
                               ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
                               ,min(Datestart) as starttime\
