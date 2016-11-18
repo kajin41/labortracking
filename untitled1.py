@@ -212,8 +212,8 @@ def totals_view():
         subjobs = {}
         mh = 0
         for s in masterjobs_manhr:
-            print(s[0], masterjobs_total[0])
-            if s[0] == masterjobs_total[0]:
+            print(s[0], masterjob[0])
+            if s[0] == masterjob[0]:
                 mh = s[1]
                 print("true...........")
         subjobs[masterjob[0]] = SubJob(masterjob[2], masterjob[3], masterjob[1], mh, {})
