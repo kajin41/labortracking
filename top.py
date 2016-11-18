@@ -13,3 +13,47 @@ ipaddrs = {'10.1.1.34': 'FAB010',
            '10.1.1.92': 'FAB080',
            '10.1.1.94': 'FAB060',
            '10.1.1.79': 'gmercado'}
+
+SQLQueries = {
+    'station-manhours': "SELECT [TrackLaborJob].Job, [Station], sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
+                          FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
+                          left join WipMaster\
+                          on TrackLaborJob.Job=WipMaster.Job",
+    'station-totaltime': "SELECT\
+                              [TrackLaborJob].Job\
+	                          ,[MasterJob]\
+                              ,[Station]\
+                              ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
+                              ,min(Datestart) as starttime\
+                              ,max(DateFinish) as endtime\
+                            FROM [SysproCompanyC].[dbo].[TrackLaborJob]\
+                            left join WipMaster\
+                            on TrackLaborJob.Job=WipMaster.Job",
+    'station-group': "GROUP BY MasterJob,Job,Station",
+    'subJob-manhours': "SELECT [TrackLaborJob].Job, sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
+                          FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
+                          left join WipMaster\
+                          on TrackLaborJob.Job=WipMaster.Job",
+    'subJob-totaltime': "SELECT\
+	                          [MasterJob]\
+                              ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
+                              ,min(Datestart) as starttime\
+                              ,max(DateFinish) as endtime\
+                            FROM [SysproCompanyC].[dbo].[TrackLaborJob]\
+                            left join WipMaster\
+                            on TrackLaborJob.Job=WipMaster.Job",
+    'subJob-group': "GROUP BY MasterJob, TrackLaborJob.Job",
+    'masterJob-manhours': "SELECT [TrackLaborJob].Job, sum(datediff(minute,Datestart,DateFinish)) as manMinutes\
+                          FROM [SysproCompanyC].[dbo].[TrackLaborEmployee]\
+                          left join WipMaster\
+                          on TrackLaborJob.Job=WipMaster.Job",
+    'masterJob-totaltime': "SELECT\
+	                          [MasterJob]\
+                              ,sum(datediff(minute,Datestart,DateFinish)) as minutesElapsed\
+                              ,min(Datestart) as starttime\
+                              ,max(DateFinish) as endtime\
+                            FROM [SysproCompanyC].[dbo].[TrackLaborJob]\
+                            left join WipMaster\
+                            on TrackLaborJob.Job=WipMaster.Job",
+    'masterJob-group': "GROUP BY MasterJob",
+}

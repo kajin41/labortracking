@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 
-from top import employees, activeWorkstations, currentJobs, cursor, conn, ipaddrs
+from top import employees, activeWorkstations, currentJobs, cursor, conn, ipaddrs,SQLQueries
 from datetime import datetime
 import pyodbc
 
@@ -166,7 +166,7 @@ def main_view():
     return render_template("View.html", workstations=activeWorkstations)
 
 
-class subJob:
+class SubJob:
     def __init__(self, starttime, endtime, totaltime, manhours, stations):
         self.starttime = starttime
         self.endtime = endtime
@@ -175,7 +175,7 @@ class subJob:
         self.stations = stations
 
 
-class station:
+class Station:
     def __init__(self, starttime, endtime, totaltime, manhours):
         self.starttime = starttime
         self.endtime = endtime
@@ -186,20 +186,57 @@ class station:
 @app.route('/labor/totals', methods=['GET', 'POST'])
 def totals_view():
     # todo: get active jobs and run their totals etc
-    masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
-                                              {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
-                             '123457': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
-                                              {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22'),
-                                               'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
-                             '123458': subJob('start time 3', 'end time 3', 'total time 3', 'manhours 3',
-                                              {'fab4': station('start time 33', 'end time 33', 'total time 33', 'manhours 33')})},
-                  '234567': {'234567': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
-                                              {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11'),
-                                               'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
-                             '234568': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
-                                              {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22')}),
-                             '234569': subJob('start time 3', 'end time 3', 'total time 3', 'manhours 3',
-                                              {'fab4': station('start time 33', 'end time 33', 'total time 33', 'manhours 33')})}}
+    SQLwhere = " WHERE Complete = 'N' "
+    if request.method == 'POST':
+        if request.form['filter'] == 'Job':
+            SQLwhere = " WHERE WipMaster.Job > " + request.form['From'] + " and WipMaster.Job < " + request.form['To'] + " "
+        elif request.form['filter'] == 'Date':
+            SQLwhere = " WHERE WipMaster.JobStartDate > " + request.form['From'] + " and WipMaster.JobStartDate < " + request.form['To'] + " "
+
+    masterjobs = {}
+
+    masterjobs_total = cursor.execute(SQLQueries['masterJob-totaltime'] + SQLwhere + SQLQueries['masterJob-group'])
+    masterjobs_manhr = cursor.execute(SQLQueries['masterJob-manhours' + SQLwhere + SQLQueries['masterJob-group']])
+
+    for masterjob in masterjobs_total:
+        SQLwhere2 = " and MasterJob like '" + masterjob.Job + "' "
+        subjobs_total = cursor.execute(SQLQueries['subJob-totaltime' + SQLwhere + SQLwhere2 + SQLQueries['subJob-group']])
+        subjobs_manhr = cursor.execute(SQLQueries['subJob-manhours' + SQLwhere + SQLwhere2 + SQLQueries['subJob-group']])
+
+        subjobs = {}
+        for subjob in subjobs_total:
+            SQLwhere3 = " and WipMaster.Job like '" + subjob.Job + "' "
+            station_total = cursor.execute(SQLQueries['station-totaltime' + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group']])
+            station_manhr = cursor.execute(SQLQueries['station-manhours' + SQLwhere + SQLwhere2 + SQLwhere3 + SQLQueries['station-group']])
+
+            stations = {}
+            for station in station_total:
+                mh = 0
+                for s in station_manhr:
+                    if s.Station == station.Station:
+                        mh = s.manhours
+                stations[station.Station] = Station(station.starttime, station.endtime, station.totaltime, mh)
+            mh = 0
+            for s in subjobs_manhr:
+                if s.Job == subjob.Job:
+                    mh = s.manhours
+            subjobs[subjob.Job] = SubJob(subjob.starttime, subjob.endtime, subjob.totaltime, mh, stations)
+        masterjobs[masterjob.Job] = subjobs
+
+    # masterjobs = {'123456': {'123456': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
+    #                                           {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
+    #                          '123457': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
+    #                                           {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22'),
+    #                                            'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
+    #                          '123458': subJob('start time 3', 'end time 3', 'total time 3', 'manhours 3',
+    #                                           {'fab4': station('start time 33', 'end time 33', 'total time 33', 'manhours 33')})},
+    #               '234567': {'234567': subJob('start time 1', 'end time 1', 'total time 1', 'manhours 1',
+    #                                           {'fab1': station('start time 11', 'end time 11', 'total time 11', 'manhours 11'),
+    #                                            'fab2': station('start time 11', 'end time 11', 'total time 11', 'manhours 11')}),
+    #                          '234568': subJob('start time 2', 'end time 2', 'total time 2', 'manhours 2',
+    #                                           {'fab3': station('start time 22', 'end time 22', 'total time 22', 'manhours 22')}),
+    #                          '234569': subJob('start time 3', 'end time 3', 'total time 3', 'manhours 3',
+    #                                           {'fab4': station('start time 33', 'end time 33', 'total time 33', 'manhours 33')})}}
     return render_template("Totals.html", masterjobs=masterjobs)
 
 if __name__ == '__main__':
